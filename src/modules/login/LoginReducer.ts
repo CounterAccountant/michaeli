@@ -1,29 +1,43 @@
 import { AnyAction, createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 
 interface LoginState {
+    username: string;
+    password: string;
+    isLoggedIn: boolean;
 }
 
 const initialState: LoginState = {
+    username: '',
+    password: '',
+    isLoggedIn: true,
 };
+
 
 export const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        // setValueInQuery: (state: LoginState, action: PayloadAction<IBookSearchKeysValues>) => {
-        //     // state.query[action.payload.key] = action.payload.value;
-        // },
+        setUsername: (state: LoginState, action: PayloadAction<string>) => {
+            state.username = action.payload;
+        },
+        setPassword: (state: LoginState, action: PayloadAction<string>) => {
+            state.password = action.payload;
+        },
+        setIsLoggedIn: (state: LoginState, action: PayloadAction<boolean>) => {
+            state.isLoggedIn = action.payload;
+        },
 
 
     },
 });
 
-export const {  } = loginSlice.actions;
+export const { setUsername, setPassword, setIsLoggedIn } = loginSlice.actions;
 
 
-// export const getSearchBookQuery = (state: RootState): IBookSearch => state.search_books.query;
-// export const getIsLoading = (state: RootState): boolean => state.search_books.is_loading;
-
+export const getUsername = (state: RootState): string => state.login.username;
+export const getPassword = (state: RootState): string => state.login.password;
+export const getIsLoggedIn = (state: RootState): boolean => state.login.isLoggedIn;
 
 
 export default loginSlice.reducer;

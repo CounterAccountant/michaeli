@@ -1,5 +1,8 @@
 import { Button, Input } from "@material-ui/core";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { getIsLoggedIn, getPassword, getUsername, setPassword, setUsername } from "./LoginReducer";
 
 interface LoginParams {
     name?: string;
@@ -9,8 +12,16 @@ interface LoginParams {
 
 
 const Login: FunctionComponent<LoginParams> = (params: LoginParams) => {
-    const [username, setUsername] = useState<string>(params.name || '');
-    const [password, setPassword] = useState<string>();
+    const username = useSelector(getUsername);
+    const password = useSelector(getPassword);
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(getIsLoggedIn);
+    const history = useHistory();
+    useEffect(()=>{
+        if (isLoggedIn === true) {
+            history.push('/orders')
+        }
+    },[isLoggedIn])
     return (
         <div
             style={{
@@ -28,7 +39,7 @@ const Login: FunctionComponent<LoginParams> = (params: LoginParams) => {
             <label>username is : {username}</label>
             <Input
                 onChange={(ev) => {
-                    setUsername(ev.target.value)
+                    dispatch(setUsername(ev.target.value))
                 }}
                 value={username}
                 title='Username'
@@ -36,7 +47,7 @@ const Login: FunctionComponent<LoginParams> = (params: LoginParams) => {
             <label>password is : {password}</label>
             <Input
                 onChange={(ev) => {
-                    setPassword(ev.target.value);
+                    dispatch(setPassword(ev.target.value))
                 }}
                 value={password}
                 title='Username'
